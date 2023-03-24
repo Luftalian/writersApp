@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb:10.6.4 #使用するDockerイメージ
+    container_name: mariadb #コンテナに名前を付ける
+    environment:
+      MARIADB_ROOT_PASSWORD: password #MariaDBのパスワード
+    ports:
+      - "3306:3306" #ホスト側のポート：コンテナ側のポート
+    volumes:
+      - ./mariadb-data:/var/lib/mysql #マウントするディレクトリを指定
+      - ./_tool/mysql/WRAPP.sql:/docker-entrypoint-initdb.d/WRAPP.sql #SQLスクリプトをマウントして、MariaDBの初期化を行う
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin #使用するDockerイメージ
+    container_name: phpmyadmin #コンテナに名前を付ける
+    environment:
+      PMA_HOST: mariadb:3306 #上で設定したMariaDBのホスト側のポート
+    ports:
+      - "8040:80" #ホスト側のポート：コンテナ側のポート
+    depends_on:
+      - mariadb #MariaDBが起動していることを確認する
+
+# volumes:
+#   mariadb-data: #MariaDBのデータを格納するボリュームを作成
+
+
+# version: "3.9"
+# # ref: https://docs.docker.com/compose/compose-file
+# services:
+#   app:
+#     image: wrapp
+#     build:
+#       args:
+#         - target=dev
+#     environment:
+#       WRAPP_ENV: dev
+#       PORT: 8080
+#       WRAPP_DB_HOST: wrapp-db
+#       WRAPP_DB_PORT: 3306
+#       WRAPP_DB_USER: wrapp
+#       WRAPP_DB_PASSWORD: wrapp
+#       WRAPP_DB_NAME: wrapp
+#       WRAPP_REDIS_HOST: wrapp-redis
+#       WRAPP_REDIS_PORT: 6379
+#     volumes:
+#       - .:/app
+#     ports:
+#       - "18000:8080"
+#     links:
+#       - wrapp-db
+#   wrapp-db:
+#     image: mysql:8.0.29
+#     platform: linux/amd64
+#     container_name: wrapp-db
+#     environment:
+#       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+#       MYSQL_USER: wrapp
+#       MYSQL_PASSWORD: wrapp
+#       MYSQL_DATABASE: wrapp
+#     volumes:
+#       - wrapp-db-data:/var/lib/mysql
+#       - $PWD/_tools/mysql/conf.d:/etc/mysql/conf.d:cached
+#     ports:
+#       - "33306:3306"
+#   wrapp-redis:
+#     image: "redis:latest"
+#     container_name: wrapp-redis
+#     ports:
+#       - "36379:6379"
+#     volumes:
+#       - wrapp-redis-data:/data
+# volumes:
+#   wrapp-db-data:
+#   wrapp-redis-data:
