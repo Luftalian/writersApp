@@ -22,6 +22,12 @@ func init() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(session.Middleware(store))
+
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+        AllowOrigins: []string{"https://writersapp.trap.games"},
+        AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+        AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
+    }))
 	
 	userController := controller.NewUserController(dbHandler)
 
