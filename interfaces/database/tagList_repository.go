@@ -20,7 +20,20 @@ func (repo *TagListRepository) FindAll() (domain.TagLists, error) {
 	if err != nil {
 		return nil, err
 	}
-	return tagLists, nil
+	tagNameLists := domain.TagLists{}
+	for _, tagList := range tagLists {
+		check := false
+		for _, tagName := range tagNameLists {
+			if tagName.TagName == tagList.TagName {
+				check = true
+				break
+			}
+		}
+		if check == false {
+			tagNameLists = append(tagNameLists, tagList)
+		}
+	}
+	return tagNameLists, nil
 }
 
 func (repo *TagListRepository) Store(tagList domain.TagList) (domain.TagList, error) {

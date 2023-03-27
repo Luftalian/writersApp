@@ -67,19 +67,19 @@ func init() {
 		return nil
 	})
 
-	tagController := controller.NewTagController(dbHandler)
-	e.POST("/tags", func(c echo.Context) error {
-		tagController.Create(c)
-		return nil
-	})
-	e.GET("/tags", func(c echo.Context) error {
-		tagController.Index(c)
-		return nil
-	})
-	e.GET("/tags/:id", func(c echo.Context) error {
-		tagController.Show(c)
-		return nil
-	})
+	// tagController := controller.NewTagController(dbHandler)
+	// e.POST("/tags", func(c echo.Context) error {
+	// 	tagController.Create(c)
+	// 	return nil
+	// })
+	// e.GET("/tags", func(c echo.Context) error {
+	// 	tagController.Index(c)
+	// 	return nil
+	// })
+	// e.GET("/tags/:id", func(c echo.Context) error {
+	// 	tagController.Show(c)
+	// 	return nil
+	// })
 
 	tagListController := controller.NewTagListController(dbHandler)
 	e.POST("/tag", func(c echo.Context) error {
