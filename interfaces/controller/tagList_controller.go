@@ -32,6 +32,11 @@ func (controller *TagListController) Create(c Context) {
 		return
 	}
 	t, err := controller.Interactor.Add(t)
+	if err == usecase.ErrNoTagName {
+		log.Printf("Error creating tag list: %v", err)
+		c.JSON(http.StatusNoContent, err)
+		return
+	}
 	if err != nil {
 		log.Printf("Error creating tag list: %v", err)
 		c.JSON(http.StatusInternalServerError, err)

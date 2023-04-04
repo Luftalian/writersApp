@@ -8,13 +8,15 @@ import (
 	"github.com/Luftalian/writers_app/domain"
 )
 
+var ErrNoTagName = errors.New("tag name cannot be empty")
+
 type TagListInteractor struct {
 	TagListRepository TagListRepository
 }
 
 func (interactor *TagListInteractor) Add(t domain.TagList) (domain.TagList, error) {
 	if t.TagName == "" {
-		return domain.TagList{}, errors.New("tag name cannot be empty")
+		return domain.TagList{}, ErrNoTagName
 	}
 	tag, err := interactor.TagListRepository.Store(t)
 	if err != nil {
