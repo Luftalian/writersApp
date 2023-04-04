@@ -29,7 +29,7 @@ func (repo *TagListRepository) FindAll() (domain.TagLists, error) {
 				break
 			}
 		}
-		if check == false {
+		if !check {
 			tagNameLists = append(tagNameLists, tagList)
 		}
 	}
