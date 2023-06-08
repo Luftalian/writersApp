@@ -80,7 +80,7 @@ func (repo *UserLikeRepository) Delete(u domain.UserLike) error {
 		return err
     }
 	if err != nil {
-		return errors.New("UserLike already exists")
+		return errors.New("Something went wrong")
 	}	
 	_, err = repo.Exec("DELETE FROM userLikes WHERE user_id = ? AND text_id = ?", u.UserID, u.TextID)
 	if err != nil {
