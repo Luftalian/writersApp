@@ -75,7 +75,14 @@ func (repo *UserLikeRepository) Update(userLike domain.UserLike) error {
 }
 
 func (repo *UserLikeRepository) Delete(u domain.UserLike) error {
-	_, err := repo.Exec("DELETE FROM userLikes WHERE user_id = ? AND text_id = ?", u.UserID, u.TextID)
+	err := repo.Get(&u, "SELECT * FROM userLikes WHERE user_id = ? AND text_id = ?", u.UserID, u.TextID)
+    if err == sql.ErrNoRows {
+		return err
+    }
+	if err != nil {
+		return errors.New("UserLike already exists")
+	}	
+	_, err = repo.Exec("DELETE FROM userLikes WHERE user_id = ? AND text_id = ?", u.UserID, u.TextID)
 	if err != nil {
 		return err
 	}
