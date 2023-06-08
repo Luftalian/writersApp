@@ -53,7 +53,7 @@ func (controller *TextController) Index(c Context) {
 		c.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	log.Printf("TextController.Index: %v", texts)
+	log.Printf("TextController.Index: %v", "texts")
 	c.JSON(http.StatusOK, texts)
 }
 
